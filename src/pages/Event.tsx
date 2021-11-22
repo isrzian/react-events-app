@@ -1,9 +1,24 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
+import {Layout, Row, Button, Modal} from "antd";
+import {EventCalendar} from "../components/EventCalendar";
+import {EventForm} from "../components/EventForm";
 
 export const Event: FC = () => {
+    const [modalVisible, setModalVisible] = useState(false)
     return (
-        <div>
-            Event Page
-        </div>
+        <Layout>
+            <EventCalendar events={[]} />
+            <Row justify="center">
+                <Button onClick={() => setModalVisible(true)}>Add event</Button>
+            </Row>
+            <Modal
+                title="Add event"
+                visible={modalVisible}
+                footer={null}
+                onCancel={() => setModalVisible(false)}
+            >
+                <EventForm />
+            </Modal>
+        </Layout>
     )
 }
