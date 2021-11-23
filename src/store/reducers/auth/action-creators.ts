@@ -1,7 +1,6 @@
 import {AuthActionsEnum, SetAuthAction, SetErrorAction, SetIsLoadingAction, SetUserAction} from "./types";
 import {IUser} from "../../../models/IUser";
 import {AppDispatch} from "../../index";
-import axios from "axios";
 import UserService from "../../../api/UserService";
 
 export const AuthActionCreators = {
@@ -18,8 +17,8 @@ export const AuthActionCreators = {
                 if (mockUser) {
                     localStorage.setItem('auth', 'true')
                     localStorage.setItem('user', mockUser.username)
-                    dispatch(AuthActionCreators.setIsAuth(true))
                     dispatch(AuthActionCreators.setUser(mockUser))
+                    dispatch(AuthActionCreators.setIsAuth(true))
                 } else {
                     dispatch(AuthActionCreators.setError('Incorrect user data!'))
                 }

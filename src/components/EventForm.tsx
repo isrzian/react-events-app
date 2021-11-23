@@ -3,9 +3,13 @@ import {rules} from "../utils/rules";
 import {Button, DatePicker, Form, Input, Row, Select} from "antd";
 import {IUser} from "../models/IUser";
 import {IEvent} from "../models/IEvent";
+import {Moment} from "moment";
+import {formatDate} from "../utils/date";
+import {useTypedSelector} from "../hooks/useTypedSelector";
 
 interface EventFormProps {
-    guests: IUser[]
+    guests: IUser[],
+    submit: (event: IEvent) => void
 }
 
 export const EventForm: FC<EventFormProps> = (props) => {
@@ -16,21 +20,38 @@ export const EventForm: FC<EventFormProps> = (props) => {
         guest: ''
     } as IEvent)
 
+    const {user} = useTypedSelector(state => state.auth)
+
+    const selectDate = (date: Moment | null) => {
+        if (date) {
+            setEvent({...event, date: formatDate(date.toDate())})
+        }
+    }
+
+    const submitForm = () => {
+        props.submit({...event, author: user.username})
+    }
+
     return (
-        <Form>
+        <Form onFinish={submitForm}>
             <Form.Item
                 label="Event description"
                 name="description"
                 rules={[rules.required()]}
             >
-                <Input />
+                <Input
+                    value={event.description}
+                    onChange={e => setEvent({...event, description: e.target.value})}
+                />
             </Form.Item>
             <Form.Item
                 label="Event date"
                 name="date"
                 rules={[rules.required()]}
             >
-                <DatePicker />
+                <DatePicker
+                    onChange={date => selectDate(date)}
+                />
             </Form.Item>
             <Form.Item
                 label="Guest"
