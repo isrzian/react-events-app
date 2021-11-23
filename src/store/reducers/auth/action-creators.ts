@@ -16,7 +16,7 @@ export const AuthActionCreators = {
                 const mockUser = response.data.find(user => user.username === username && user.password === password)
                 if (mockUser) {
                     localStorage.setItem('auth', 'true')
-                    localStorage.setItem('user', mockUser.username)
+                    localStorage.setItem('username', mockUser.username)
                     dispatch(AuthActionCreators.setUser(mockUser))
                     dispatch(AuthActionCreators.setIsAuth(true))
                 } else {
@@ -30,7 +30,7 @@ export const AuthActionCreators = {
     },
     logout: () => async (dispatch: AppDispatch) => {
         localStorage.removeItem('auth')
-        localStorage.removeItem('user')
+        localStorage.removeItem('username')
         dispatch(AuthActionCreators.setUser({} as IUser))
         dispatch(AuthActionCreators.setIsAuth(false))
     },
